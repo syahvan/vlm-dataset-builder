@@ -1,71 +1,62 @@
 # VLM Dataset Builder
 
-A Streamlit-based tool for creating and managing datasets for Vision-Language Model (VLM) training. This tool helps you annotate images, create structured datasets, and export in formats compatible with Hugging Face and other VLM training pipelines.
+A Streamlit application for building and managing image datasets with custom annotations for Vision-Language Models (VLMs).
+
+## Overview
+
+VLM Dataset Builder makes it easy to:
+- Load and navigate through images
+- Create and apply custom annotation schemas
+- Export annotations in a structured JSON format
+- Save both images and annotations in an organized directory structure
 
 ## Features
 
-- Load images from local directories
-- Define custom annotation schemas with different data types
-- Annotate images with structured metadata
-- Navigate through image collections
-- Maintain separate JSON annotations for each image
+### Image Management
+- Load images from a local directory
+- Navigate through images with previous/next controls
+- View image thumbnails in the dataset preview
 
-## Installation
+### Annotation System
+- Create custom annotation fields with different data types:
+  - String
+  - Integer
+  - Float
+  - Boolean
+  - Array (comma-separated values)
+- Apply annotations to images
+- Edit existing annotations
 
-1. Clone this repository:
-```bash
-git clone <repository-url>
-cd VLM\ Dataset\ Builder
-```
+### Export Capabilities
+- Structured directory output with:
+  - `images/` folder containing all annotated images
+  - `annotations/` folder containing JSON files for each image
+  - `index.json` file mapping images to their annotations
+- Automatic saving of annotations when navigating between images
 
-2. Install the required dependencies:
-```bash
-pip install streamlit pandas pillow pyarrow uuid
-```
+## Usage
 
-## Running the Application
+1. **Load Images**:
+   - Enter the path to your image directory (default: "image_raw")
+   - Click "Load Images" to import all images from the directory
 
-Launch the application with:
+2. **Configure Annotation Fields**:
+   - Add custom keys with the "Add Key" section
+   - Choose appropriate data types for each key
+   - Delete unwanted keys with the "Delete" button
 
-```bash
-streamlit run app.py
-```
+3. **Annotate Images**:
+   - Navigate through images with the Previous/Next buttons
+   - Fill in the annotation form for each image
+   - Click "Save Annotation" to save your work
 
-The application will start and open in your default web browser.
+4. **Export Settings**:
+   - Specify a directory for exports (default: "vlm_dataset_export")
+   - Use "Update Export Directory" to create the directory structure
 
-## How to Use
+## Directory Structure
 
-### 1. Load Images
-
-1. In the sidebar, specify the directory containing your images in the "Image Directory Path" field (default: "image_raw")
-2. Click "Load Images" to scan the directory for supported image files
-3. The app will display how many images were found
-
-### 2. Configure Annotation Keys
-
-1. In the sidebar under "Annotation Keys Configuration," you'll see existing keys
-2. To add a new key:
-   - Enter a name in the "Key Name" field
-   - Select the data type from the dropdown (string, float, integer, boolean, or array)
-   - Click "Add Key"
-3. To delete a key, click the "Delete" button next to it
-
-### 3. Annotate Images
-
-1. Navigate through images using the "Previous" and "Next" buttons
-2. Fill in the form fields for each annotation key
-3. Click "Save Annotation" to store the data
-4. For array fields, enter comma-separated values
-
-### 4. Export Your Dataset
-
-1. Specify an export directory in the sidebar (default: "vlm_dataset_export")
-2. Click "Update Export Directory" to ensure the directory structure exists
-3. Enter an instruction text that will apply to all images in the dataset
-
-## Output Structure
-
-The exported dataset includes:
+The application creates the following directory structure for exports:
 
 ```
 vlm_dataset_export/
@@ -77,33 +68,43 @@ vlm_dataset_export/
 │   ├── image1.json
 │   ├── image2.json
 │   └── ...
-├── index.json
-└── dataset.parquet
+└── index.json
 ```
-
-- **images/**: Contains copies of all annotated images
-- **annotations/**: Individual JSON files for each image
-- **index.json**: Maps images to their annotation files
-
-## Example Workflow
-
-1. Create a directory named "image_raw" and place your images there
-2. Launch the application and load images
-3. Add custom annotation keys (e.g., "caption", "tags", "category")
-4. Navigate through images and provide annotations
-
-## Tips
-
-- You can clear all annotations by clicking "Clear Dataset" and confirming
-- The "Example JSON Structure" in the sidebar shows how your annotations will be structured
-- Arrays should be entered as comma-separated values (e.g., "item1, item2, item3")
-- The instruction text should describe what task you want the VLM to perform with the images
 
 ## Requirements
 
 - Python 3.6+
 - Streamlit
 - Pandas
-- PIL/Pillow
-- PyArrow
-- UUID
+- PIL (Pillow)
+
+## Installation
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Run the application:
+   ```bash
+   streamlit run app.py
+   ```
+
+## Example JSON Structure
+
+For an image `example.jpg`, the corresponding annotation file `example.json` might look like:
+
+```json
+{
+  "caption": "A scenic mountain landscape at sunset",
+  "tags": ["mountains", "sunset", "nature"],
+  "rating": 4.5,
+  "is_featured": true
+}
+```
+
+## Tips
+
+- For multi-value fields, use the "array" type and enter values as comma-separated items
+- Annotations are automatically saved when navigating between images
+- Use the dataset preview to quickly review your annotations
