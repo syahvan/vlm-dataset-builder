@@ -42,11 +42,12 @@ def load_images_from_directory(directory="image_raw"):
         os.makedirs(directory, exist_ok=True)
         return []
     
+    annotations = [filename for filename in os.listdir("vlm_dataset_export/annotations")]
     image_extensions = ['.jpg', '.jpeg', '.png', '.bmp', '.gif']
     image_files = []
     
     for filename in os.listdir(directory):
-        if any(filename.lower().endswith(ext) for ext in image_extensions):
+        if any(filename.lower().endswith(ext) for ext in image_extensions) and (filename.lower()[:-4] + ".json") not in annotations:
             image_files.append(os.path.join(directory, filename))
     
     return sorted(image_files)
@@ -495,7 +496,7 @@ else:
 st.header("Dataset Preview")
 
 if len(st.session_state.dataset) > 0:
-    for idx, entry in enumerate(st.session_state.dataset):
+    for idx, entry in enumerate(st.session_state.dataset[::-1][:10]):
         with st.container():
             cols = st.columns([1, 3, 1])
             
